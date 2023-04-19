@@ -19,6 +19,8 @@ export default class Experience {
   renderer: Renderer
   world: World
   noteOn: boolean
+  highFreq: number
+  lowFreq: number
 
   constructor () {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -39,6 +41,9 @@ export default class Experience {
     this.time.on('tick', () => {
       this.update()
     })
+
+    this.highFreq = 0.1
+    this.lowFreq = 0.0001
   }
 
   setMembers (canvas?: HTMLElement) {
@@ -61,10 +66,24 @@ export default class Experience {
 
   update () {
     if(this.noteOn) {
-      this.world.ball.makeRoughBall(this.world.ball.modulate(Math.pow(0.001, 0.8), 0, 1, 0, 8), this.world.ball.modulate(0.1, 0, 1, 0, 4))
+      this.highFreq += 0.001
+      this.lowFreq += 0.0001
+      if(this.highFreq > 0.2) this.highFreq = 0.2
+      if(this.lowFreq > 0.01) this.lowFreq = 0.01
+    } else {
+      this.highFreq -= 0.002
+      this.lowFreq -= 0.0002
+      if(this.highFreq < 0.0001) this.highFreq = 0.0001
+      if(this.lowFreq < 0.01) this.lowFreq = 0.01
     }
 
+    this.world.ball.makeRoughBall(this.world.ball.modulate(Math.pow(this.lowFreq, 0.8), 0, 1, 0, 8), this.world.ball.modulate(this.highFreq, 0, 1, 0, 4))
+    this.world.ball2.makeRoughBall(this.world.ball.modulate(Math.pow(this.lowFreq, 0.8), 0, 1, 0, 8), this.world.ball.modulate(this.highFreq, 0, 1, 0, 4))
+    this.world.ball3.makeRoughBall(this.world.ball.modulate(Math.pow(this.lowFreq, 0.8), 0, 1, 0, 8), this.world.ball.modulate(this.highFreq, 0, 1, 0, 4))
+
     this.world.ball.rotate()
+    this.world.ball2.rotate()
+    this.world.ball3.rotate()
 
     this.camera.update()
     this.renderer.update()
@@ -75,6 +94,7 @@ export default class Experience {
 
   setScene () {
     this.scene = new THREE.Scene()
+    // this.scene.fog = new THREE.Fog('#fff', 50, 100 )
     this.changeBackground()
   }
 
@@ -106,6 +126,8 @@ export default class Experience {
     const index = Math.floor(Math.random() * colors.length)
 
     const color = colors[index]
+
+    // this.scene.fog = new THREE.Fog(color, 30, 40 )
 
     this.scene.background = new THREE.Color(color)
   }

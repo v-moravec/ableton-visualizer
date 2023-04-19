@@ -11,6 +11,8 @@ export default class World extends EventEmitter {
   environment: Environment
   resources: Resources
   ball: Cube
+  ball2: Cube
+  ball3: Cube
 
   constructor (experience: Experience) {
     super()
@@ -22,6 +24,10 @@ export default class World extends EventEmitter {
     // Setup
     this.environment = new Environment(this.experience)
     this.ball = new Cube(this.experience)
+    this.ball2 = new Cube(this.experience, 4)
+    this.ball2.setPosition(17, 0.5, 3)
+    this.ball3 = new Cube(this.experience, 4)
+    this.ball3.setPosition(-17, 0.5, 3)
 
     this.resources.on('ready', () => {
       // If resources are being loaded

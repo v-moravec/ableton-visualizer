@@ -67,10 +67,6 @@ onMounted(async () => {
     addListeners()
   })
 
-  setInterval(() => {
-    console.log(inputSoftware.value)
-  }, 1000)
-
   addListeners()
 })
 
