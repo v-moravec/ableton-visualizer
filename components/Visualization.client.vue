@@ -12,18 +12,30 @@
         </div>
       </div>
     </transition>
+    <div v-if="inputSoftware && showInputSelect" class="fixed z-10">
+      <select v-model="inputSoftware">
+        <option v-for="input in inputs" :key="input.id" :value="inputSoftware">
+          {{ input.name }}
+        </option>
+      </select>
+    </div>
     <canvas ref="webgl" class="webgl" @wheel="killTimeline()" @mousedown="killTimeline()" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import Experience from '~/service/experience/Experience'
-import {WebMidi} from 'webmidi'
+import {Input} from 'webmidi'
 
 const experience = new Experience()
 const webgl = ref<HTMLCanvasElement>()
 const overlay = ref(true)
 const loading = ref(true)
+
+const inputSoftware = ref()
+const inputs = ref<Input[]>([])
+
+const showInputSelect = ref(false)
 
 onMounted(async () => {
   // Elements in .client components are available only after nextTick()
@@ -34,36 +46,25 @@ onMounted(async () => {
     turnOffOverlay()
   })
 
-  await WebMidi.enable(function(err) { //check if WebMidi.js is enabled
-    if (err) {
-      console.log('WebMidi could not be enabled.', err)
-    } else {
-      console.log('WebMidi enabled!')
+  addEventListener('keypress', (event) => {
+    if(event.key === 'h') {
+      showInputSelect.value = !showInputSelect.value
     }
   })
 
-  //name our visible MIDI input and output ports
-  console.log('---')
-  console.log('Inputs Ports: ')
-  for (let i = 0; i < WebMidi.inputs.length; i++) {
-    console.log(i + ': ' + WebMidi.inputs[i].name)
-  }
+  await useWebMidi()
 
-  console.log('---')
-  console.log('Output Ports: ');
-  for (let i = 0; i < WebMidi.outputs.length; i++) {
-    console.log(i + ': ' + WebMidi.outputs[i].name)
-  }
+  inputs.value = useMidiInputs()
 
   //Choose an input port
-  const inputSoftware = WebMidi.inputs[0]
+  inputSoftware.value = useMidiDevice()
+  triggerRef(inputSoftware)
   //The 0 value is the first value in the array
   //meaning that we are going to use the first MIDI input we see
   //which in this case is 'LoopMIDI port'
-  console.log(inputSoftware)
 
   //listen to all incoming "note on" input events
-  inputSoftware.addListener('noteon',
+  inputSoftware.value.addListener('noteon',
     function(e) {
       //Show what we are receiving
       // console.log(e)
@@ -78,20 +79,19 @@ onMounted(async () => {
   )
   //The note off functionality will need its own event listener
   //You don't need to pair every single note on with a note off
-  inputSoftware.addListener('noteoff',
+  inputSoftware.value.addListener('noteoff',
     function(e) {
       //Show what we are receiving
       // console.log('Received \'noteoff\' message (' + e.note.name + e.note.octave + ') ' + e.note.number + '.')
       //the function you want to trigger on a 'note on' event goes here
       experience.noteOn = false
-      console.log(false)
     }, {
       channels: 1
     }
   )
 
   //listen to all incoming "note on" input events
-  inputSoftware.addListener('noteon',
+  inputSoftware.value.addListener('noteon',
     function(e) {
       //Show what we are receiving
       // console.log(e)
