@@ -14,7 +14,7 @@
     </transition>
     <div v-if="inputSoftware && showInputSelect" class="fixed z-10">
       <select v-model="inputSoftware">
-        <option v-for="input in inputs" :key="input.id" :value="inputSoftware">
+        <option v-for="input in inputs" :key="input.id" :value="input">
           {{ input.name }}
         </option>
       </select>
@@ -63,6 +63,26 @@ onMounted(async () => {
   //meaning that we are going to use the first MIDI input we see
   //which in this case is 'LoopMIDI port'
 
+  watch(inputSoftware, () => {
+    addListeners()
+  })
+
+  setInterval(() => {
+    console.log(inputSoftware.value)
+  }, 1000)
+
+  addListeners()
+})
+
+onUnmounted(() => {
+  experience.destroy()
+})
+
+function addListeners () {
+  if(!inputSoftware.value) {
+    return
+  }
+
   //listen to all incoming "note on" input events
   inputSoftware.value.addListener('noteon',
     function(e) {
@@ -101,11 +121,7 @@ onMounted(async () => {
       channels: 2
     }
   )
-})
-
-onUnmounted(() => {
-  experience.destroy()
-})
+}
 
 function resetCamera () {
   experience.camera.reset()
