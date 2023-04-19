@@ -23,6 +23,9 @@ export default class Cube {
     this.setMesh()
 
     this.noise = new SimplexNoise()
+    this.makeRoughBall(this.modulate(Math.pow(0.001, 0.8), 0, 1, 0, 8), this.modulate(0.1, 0, 1, 0, 4))
+    this.changeColor()
+
 
     this.scene.add(this.mesh)
   }

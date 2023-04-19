@@ -75,7 +75,7 @@ export default class Experience {
 
   setScene () {
     this.scene = new THREE.Scene()
-    this.scene.background = new THREE.Color('#000')
+    this.changeBackground()
   }
 
   destroy () {
