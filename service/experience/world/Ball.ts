@@ -86,12 +86,9 @@ export default class Ball {
 
     let color
 
-    console.log((index + 1) % colors.length)
-
     if('#' + this.material.color.getHexString() !== colors[index]) {
       color = colors[index]
     } else {
-      console.log('WTF')
       color = colors[(index + 1) % colors.length]
     }
 

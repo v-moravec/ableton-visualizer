@@ -56,8 +56,8 @@ export default class World extends EventEmitter {
       if(this.highFreq > 0.2) this.highFreq = 0.2
       if(this.lowFreq > 0.01) this.lowFreq = 0.01
     } else {
-      this.highFreq -= 0.002
-      this.lowFreq -= 0.0002
+      this.highFreq -= 0.001
+      this.lowFreq -= 0.0001
       if(this.highFreq < 0.0001) this.highFreq = 0.0001
       if(this.lowFreq < 0.01) this.lowFreq = 0.01
     }
@@ -66,12 +66,12 @@ export default class World extends EventEmitter {
       this.ball2.makeRoughBall(
         this.modulate(Math.pow(0.0001, 0.8), 0, 1, 0, 8),
         this.modulate(0.1, 0, 1, 0, 4),
-        1.5
+        3
       )
       this.ball3.makeRoughBall(
         this.modulate(Math.pow(0.0001, 0.8), 0, 1, 0, 8),
         this.modulate(0.1, 0, 1, 0, 4),
-        1.5
+        3
       )
     } else {
       this.ball2.makeRoughBall(

@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import Experience from '~/service/experience/Experience'
 import Resources from '~/service/experience/utils/Resources'
 import {SimplexNoise} from 'three/examples/jsm/math/SimplexNoise'
+import {NetColor} from '~/service/experience/utils/Colors'
 
 export default class {
   experience: Experience
@@ -21,7 +22,7 @@ export default class {
 
     this.geometry = new THREE.PlaneGeometry(400, 400, 20, 20);
     this.material = new THREE.MeshLambertMaterial({
-      color: '#ffffff',
+      color: NetColor,
       side: THREE.DoubleSide,
       wireframe: true
     })
