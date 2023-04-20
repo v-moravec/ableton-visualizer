@@ -6,7 +6,7 @@ interface SEOInformation {
 
 export default ({title, description, ogImage = ''}: SEOInformation) => {
   // TODO: Change to desired url.
-  const url = 'https://jagu.cz'
+  const url = 'https://av.vojtamoravec.cz'
   useHead({
     title,
     meta: [

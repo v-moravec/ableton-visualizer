@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import {SimplexNoise} from 'three/examples/jsm/math/SimplexNoise'
 import {ColorRepresentation} from 'three'
 
-export default class Cube {
+export default class Ball {
   experience: Experience
   scene: THREE.Scene
   resources: Resources

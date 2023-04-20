@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import Experience from '~/service/experience/Experience'
 import Environment from '~/service/experience/world/Environment'
 import Resources from '~/service/experience/utils/Resources'
-import Cube from '~/service/experience/world/Cube'
+import Ball from '~/service/experience/world/Ball'
 import EventEmitter from '~/service/experience/utils/EventEmitter'
 
 export default class World extends EventEmitter {
@@ -10,9 +10,9 @@ export default class World extends EventEmitter {
   scene: THREE.Scene
   environment: Environment
   resources: Resources
-  ball: Cube
-  ball2: Cube
-  ball3: Cube
+  ball: Ball
+  ball2: Ball
+  ball3: Ball
 
   constructor (experience: Experience) {
     super()
@@ -23,10 +23,10 @@ export default class World extends EventEmitter {
 
     // Setup
     this.environment = new Environment(this.experience)
-    this.ball = new Cube(this.experience)
-    this.ball2 = new Cube(this.experience, 4)
+    this.ball = new Ball(this.experience)
+    this.ball2 = new Ball(this.experience, 4)
     this.ball2.setPosition(17, 0.5, 3)
-    this.ball3 = new Cube(this.experience, 4)
+    this.ball3 = new Ball(this.experience, 4)
     this.ball3.setPosition(-17, 0.5, 3)
 
     this.resources.on('ready', () => {
