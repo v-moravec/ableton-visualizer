@@ -85,10 +85,10 @@ function addListeners () {
       //Show what we are receiving
       // console.log(e)
       //the function you want to trigger on a 'note on' event goes here
-      if(!experience.noteOn) {
+      if(!experience.world.noteOnMelody) {
         experience.world.ball.changeColor()
       }
-      experience.noteOn = true
+      experience.world.noteOnMelody = true
     }, {
       channels: 1
     }
@@ -100,7 +100,7 @@ function addListeners () {
       //Show what we are receiving
       // console.log('Received \'noteoff\' message (' + e.note.name + e.note.octave + ') ' + e.note.number + '.')
       //the function you want to trigger on a 'note on' event goes here
-      experience.noteOn = false
+      experience.world.noteOnMelody = false
     }, {
       channels: 1
     }
@@ -112,7 +112,21 @@ function addListeners () {
       //Show what we are receiving
       // console.log(e)
       //the function you want to trigger on a 'note on' event goes here
-      experience.changeBackground()
+      experience.world.ball2.changeColor()
+      experience.world.ball3.changeColor()
+      experience.world.noteOnDrums = true
+    }, {
+      channels: 2
+    }
+  )
+
+  //listen to all incoming "note on" input events
+  inputSoftware.value.addListener('noteoff',
+    function(e) {
+      //Show what we are receiving
+      // console.log(e)
+      //the function you want to trigger on a 'note on' event goes here
+      experience.world.noteOnDrums = false
     }, {
       channels: 2
     }
