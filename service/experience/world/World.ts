@@ -18,6 +18,7 @@ export default class World extends EventEmitter {
   planeBottom: Plane
   noteOnMelody: boolean
   noteOnDrums: boolean
+  noteOnRhytm: boolean
   highFreq: number
   lowFreq: number
 
@@ -45,21 +46,38 @@ export default class World extends EventEmitter {
 
     this.noteOnMelody = false
     this.noteOnDrums = false
+    this.noteOnRhytm = false
     this.highFreq = 0.1
     this.lowFreq = 0.0001
   }
 
   update () {
     if(this.noteOnMelody) {
+      this.ball.makeRoughBall(
+        this.modulate(Math.pow(0.0001, 0.8), 0, 1, 0, 8),
+        this.modulate(0.1, 0, 1, 0, 4)
+      )
+    } else {
+      this.ball.makeRoughBall(
+        this.modulate(Math.pow(0, 0.8), 0, 1, 0, 8),
+        this.modulate(0, 0, 1, 0, 4)
+      )
+    }
+
+    if(this.noteOnRhytm) {
       this.highFreq += 0.001
       this.lowFreq += 0.0001
       if(this.highFreq > 0.2) this.highFreq = 0.2
       if(this.lowFreq > 0.01) this.lowFreq = 0.01
+      this.planeBottom.makeRoughGround(this.modulate(this.lowFreq * 4, 0, 1, 0, 4))
+      this.planeTop.makeRoughGround(this.modulate(this.highFreq, 0, 1, 0, 4))
     } else {
       this.highFreq -= 0.001
       this.lowFreq -= 0.0001
       if(this.highFreq < 0.0001) this.highFreq = 0.0001
       if(this.lowFreq < 0.01) this.lowFreq = 0.01
+      this.planeBottom.makeRoughGround(this.modulate(0, 0, 1, 0, 4))
+      this.planeTop.makeRoughGround(this.modulate(0, 0, 1, 0, 4))
     }
 
     if(this.noteOnDrums) {
@@ -83,11 +101,7 @@ export default class World extends EventEmitter {
         this.modulate(0, 0, 1, 0, 4)
       )
     }
-
-    this.ball.makeRoughBall(this.modulate(Math.pow(this.lowFreq, 0.8), 0, 1, 0, 8), this.modulate(this.highFreq, 0, 1, 0, 4))
-
-    this.planeBottom.makeRoughGround(this.modulate(this.lowFreq, 0, 1, 0.5, 4));
-    this.planeTop.makeRoughGround(this.modulate(this.highFreq, 0, 1, 0.5, 4));
+    // this.ball.makeRoughBall(this.modulate(Math.pow(this.lowFreq, 0.8), 0, 1, 0, 8), this.modulate(this.highFreq, 0, 1, 0, 4))
 
     this.ball.rotate()
     this.ball2.rotate()

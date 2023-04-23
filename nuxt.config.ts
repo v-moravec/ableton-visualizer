@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   // TODO: Documentation says this should be named "head", but with that name it doesn't work.
   app: {
     head: {
-      title: 'Jagu Nuxt template',
+      title: 'Ableton Visualizer',
       // TODO: Add your own fonts (change in assets/css/style.css as well).
       link: [
         { rel: 'icon', href: '/favicon.ico' },

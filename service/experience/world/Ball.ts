@@ -28,7 +28,7 @@ export default class Ball {
     this.noise = new SimplexNoise()
     this.changeColor()
 
-    this.scene.add(this.mesh)
+    // this.scene.add(this.mesh)
     this.scene.add(this.wfMesh)
   }
 

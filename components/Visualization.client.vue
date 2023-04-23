@@ -112,9 +112,11 @@ function addListeners () {
       //Show what we are receiving
       // console.log(e)
       //the function you want to trigger on a 'note on' event goes here
-      experience.world.ball2.changeColor()
-      experience.world.ball3.changeColor()
-      experience.world.noteOnDrums = true
+      if(e.note.identifier === 'D2' || e.note.identifier === 'C2') {
+        experience.world.ball2.changeColor()
+        experience.world.ball3.changeColor()
+        experience.world.noteOnDrums = true
+      }
     }, {
       channels: 2
     }
@@ -129,6 +131,30 @@ function addListeners () {
       experience.world.noteOnDrums = false
     }, {
       channels: 2
+    }
+  )
+
+  //listen to all incoming "note on" input events
+  inputSoftware.value.addListener('noteon',
+    function(e) {
+      //Show what we are receiving
+      console.log(e)
+      //the function you want to trigger on a 'note on' event goes here
+      experience.world.noteOnRhytm = true
+    }, {
+      channels: 3
+    }
+  )
+
+  //listen to all incoming "note on" input events
+  inputSoftware.value.addListener('noteoff',
+    function(e) {
+      //Show what we are receiving
+      // console.log(e)
+      //the function you want to trigger on a 'note on' event goes here
+      experience.world.noteOnRhytm = false
+    }, {
+      channels: 3
     }
   )
 }

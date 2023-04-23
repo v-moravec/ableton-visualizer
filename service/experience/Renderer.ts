@@ -2,6 +2,9 @@ import * as THREE from 'three'
 import Experience from '~/service/experience/Experience'
 import Sizes from '~/service/experience/utils/Sizes'
 import Camera from '~/service/experience/Camera'
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer'
+import { UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass'
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass'
 
 export default class Renderer {
   experience: Experience
@@ -10,6 +13,7 @@ export default class Renderer {
   scene: THREE.Scene
   camera: Camera
   instance: THREE.WebGLRenderer
+  composer: EffectComposer
 
   constructor (experience: Experience) {
     this.experience = experience
@@ -19,6 +23,17 @@ export default class Renderer {
     this.camera = this.experience.camera
 
     this.setInstance()
+
+    const renderScene = new RenderPass( this.scene, this.camera.instance )
+
+    const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 )
+    bloomPass.threshold = 0
+    bloomPass.strength = 1
+    bloomPass.radius = 1
+
+    this.composer = new EffectComposer(this.instance)
+    this.composer.addPass(renderScene)
+    this.composer.addPass(bloomPass)
   }
 
   setInstance () {
@@ -40,6 +55,7 @@ export default class Renderer {
   }
 
   update () {
-    this.instance.render(this.scene, this.camera.instance)
+    this.composer.render()
+    // this.instance.render(this.scene, this.camera.instance)
   }
 }
